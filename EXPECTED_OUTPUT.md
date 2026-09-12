@@ -8,7 +8,7 @@ The runner's important values after complete replay are:
 | ACC-001 | 2 | AED 225.00 | AED 25.00 | AED 0.09 | Auth-A=Approved | - |
 | ACC-001 | 3 | AED 625.00 | AED 0.00 | AED 0.25 | Auth-A=Approved | - |
 | ACC-001 | 4 | AED 440.00 | AED 0.00 | AED 0.18 | Auth-A=Settled | E6 UNKNOWN_AUTHORIZATION |
-| ACC-001 | 5 | AED 440.00 | AED 0.00 | AED 0.18 | Auth-A=Settled, Auth-B=Rejected | E8 AUTHORIZATION_NOT_APPROVED |
+| ACC-001 | 5 | AED 440.00 | AED 0.00 | AED 0.18 | Auth-A=Settled, Auth-B=Rejected | E8 AUTHORIZATION_DECLINED |
 | ACC-001 | 6 | AED 1061.22 | AED 0.00 | AED 0.42 | Auth-A=Settled, Auth-B=Rejected | - |
 | ACC-002 | 1 | BHD 0.000 | BHD 0.000 | BHD 0.000 | - | - |
 | ACC-002 | 2 | BHD 0.000 | BHD 0.000 | BHD 0.000 | - | - |
