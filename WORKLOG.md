@@ -1,15 +1,20 @@
-# WORKLOG
+2026-09-12 09:XX +04:00
+- Reviewed supplied event stream.
+- Identified three contradictory acceptance criteria.
+- Chose C#/.NET implementation.
 
-> This log records repository work performed during this implementation pass. Future entries should be added when work actually occurs; do not fabricate timestamps.
+- Began domain model design.
 
-- 2026-09-12 21:31 +04:00 — Audited the previously generated source after the `Account` duplicate-constructor compiler error was reported.
-- 2026-09-12 21:35 +04:00 — Rebuilt the repository source and replaced the conflicting `Account` primary-constructor/explicit-constructor combination with a single explicit constructor.
-- 2026-09-12 21:42 +04:00 — Reworked authorization history so daily snapshots reflect booking-time state rather than final state.
-- 2026-09-12 21:48 +04:00 — Reworked processing errors to carry account ownership so errors can be printed per account/day even when no ledger entry was created.
-- 2026-09-12 21:55 +04:00 — Corrected the E7/E9 historical-balance arithmetic and interest expectations: final Day-2 balance 225.00; Day-6 pre-capitalization AED interest base 1060.00; AED capitalization 1.22.
-- 2026-09-12 22:03 +04:00 — Added explicit daily-interest tests for every AED day and every BHD day, plus independent sum and single-capitalization assertions.
-- 2026-09-12 22:08 +04:00 — Added the required intentionally failing test for rejected acceptance criterion #6.
-- 2026-09-12 22:12 +04:00 — Added independent Python scenario arithmetic verification. The local environment does not have the .NET SDK, so `dotnet test` could not be executed here.
-- 2026-09-12 22:18 +04:00 — Added expected-output documentation and repository ignore rules; reviewed the final source for constructor duplication, error ownership, authorization-as-of-day semantics, fee idempotency, value-date reversal, and interest reconciliation.
+12:52- 1:40 pm - created the powerpoint slide
+- Reviewed the event stream -
+14:36 
+- Reviewed supplied event stream. E7/E9 criteria for reversal
+- Created the project structure
 
-- 2026-09-12 — Candidate-provided `dotnet test` output showed 6 failures: 4 implementation/test defects plus the required intentional failure. Root cause for the E9-related failures was identified: the Day-2 overdraft fee used `SourceEventId = E7`, and reversal detection incorrectly interpreted that fee as evidence that E7 had already been reversed. Corrected by adding explicit `ReversalOfEntryId` metadata. The Day-2 pre-fee test was also corrected to replay only through E7 and exclude the separately booked fee from the pre-fee calculation.
+14.39 work log 
+14.41 - chat gpt to generate 
+
+15.20 - go through the coding design
+17.29 - go through the coding design
+19.20-19.50 - rerun the program check the output against the criteria commit to repository
+21:30-22:00  running test cases and correcting source code
