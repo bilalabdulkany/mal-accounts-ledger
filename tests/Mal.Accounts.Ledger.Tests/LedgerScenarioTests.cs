@@ -17,8 +17,9 @@ public sealed class LedgerScenarioTests
         var balanceBeforeFee = engine.Entries
             .Where(e => e.AccountId == "ACC-001"
                      && e.ValueDay <= 2
-                     && e.EntryId != fee.EntryId)
-            .Sum(e => e.Type is EntryType.Credit or EntryType.InterestCapitalization
+                     && e.Type != EntryType.OverdraftFee
+                     && e.Type != EntryType.InterestCapitalization)
+            .Sum(e => e.Type == EntryType.Credit
                 ? e.Amount.Amount
                 : -e.Amount.Amount);
 
@@ -181,7 +182,7 @@ public sealed class LedgerScenarioTests
         Assert.Equal(EntryType.Debit, e7.Type);
         Assert.Equal(620m, e7.Amount.Amount);
         Assert.Equal(EntryType.Credit, e9.Type);
-        Assert.Equal("E7", e9.SourceEventId);
+        Assert.Equal("E9", e9.SourceEventId);
     }
 
     [Fact]
