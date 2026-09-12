@@ -296,7 +296,7 @@ public sealed class LedgerEngine
             return;
         }
 
-        if (_entries.Any(x => x.SourceEventId == e.ReversesEventId && x.EntryId != e.ReversesEventId))
+        if (_entries.Any(x => x.ReversalOfEntryId == e.ReversesEventId))
         {
             AddError(e, "ALREADY_REVERSED", $"Ledger entry {e.ReversesEventId} has already been reversed.");
             return;
@@ -309,7 +309,8 @@ public sealed class LedgerEngine
             reversalType,
             original.Amount,
             e.ValueDay,
-            SourceEventId: e.ReversesEventId));
+            SourceEventId: e.EventId,
+            ReversalOfEntryId: e.ReversesEventId));
 
         AssessOverdraftFor(e.AccountId, e.ValueDay, e.EventId);
     }

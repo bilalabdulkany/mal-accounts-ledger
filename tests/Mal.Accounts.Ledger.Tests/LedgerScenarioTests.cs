@@ -7,19 +7,23 @@ public sealed class LedgerScenarioTests
     [Fact]
     public void Day2_pre_fee_balance_is_negative_370_when_E7_is_applied_by_value_date()
     {
-        var result = Scenario.Run();
-        var entriesThroughE7 = result.LedgerEntries
-            .Where(e => e.AccountId == "ACC-001" && e.EntryId != "E9" && e.Type != EntryType.InterestCapitalization)
-            .ToList();
+        // E7 is booked on Day 5. Replay only through E7 so E9 has not arrived yet.
+        // The fee is a separate entry, so exclude that fee to observe the balance
+        // immediately before the fee was assessed.
+        var engine = Scenario.CreateEngine();
+        engine.Replay(Scenario.EventsThrough("E7"));
 
-        // The final replay contains E9, so calculate the transient balance explicitly
-        // from E1/E2/E7 to prove the acceptance criterion's pre-fee number.
-        var transient = entriesThroughE7
-            .Where(e => e.ValueDay <= 2)
-            .Sum(e => e.Type is EntryType.Credit or EntryType.InterestCapitalization ? e.Amount.Amount : -e.Amount.Amount);
+        var fee = engine.Entries.Single(e => e.EntryId == "FEE-ACC-001-D2");
+        var balanceBeforeFee = engine.Entries
+            .Where(e => e.AccountId == "ACC-001"
+                     && e.ValueDay <= 2
+                     && e.EntryId != fee.EntryId)
+            .Sum(e => e.Type is EntryType.Credit or EntryType.InterestCapitalization
+                ? e.Amount.Amount
+                : -e.Amount.Amount);
 
-        Assert.Equal(-370m, transient);
-        Assert.Contains(result.LedgerEntries, e => e.EntryId == "FEE-ACC-001-D2" && e.Amount.Amount == 25m);
+        Assert.Equal(-370m, balanceBeforeFee);
+        Assert.Equal(25m, fee.Amount.Amount);
     }
 
     [Fact]
@@ -91,8 +95,13 @@ public sealed class LedgerScenarioTests
         var result = Scenario.Run();
 
         Assert.Contains(result.LedgerEntries, e => e.EntryId == "E7" && e.Type == EntryType.Debit && e.Amount.Amount == 620m);
-        Assert.Contains(result.LedgerEntries, e => e.EntryId == "E9" && e.Type == EntryType.Credit && e.Amount.Amount == 620m && e.SourceEventId == "E7");
+        Assert.Contains(result.LedgerEntries, e =>
+            e.EntryId == "E9"
+            && e.Type == EntryType.Credit
+            && e.Amount.Amount == 620m
+            && e.ReversalOfEntryId == "E7");
         Assert.Contains(result.LedgerEntries, e => e.EntryId == "FEE-ACC-001-D2" && e.Amount.Amount == 25m);
+        Assert.DoesNotContain(Scenario.Day(result, "ACC-001", 6).Errors, e => e.EventId == "E9");
         Assert.Equal(225m, Scenario.Day(result, "ACC-001", 2).ClosingLedgerBalance.Amount);
     }
 
@@ -173,6 +182,21 @@ public sealed class LedgerScenarioTests
         Assert.Equal(620m, e7.Amount.Amount);
         Assert.Equal(EntryType.Credit, e9.Type);
         Assert.Equal("E7", e9.SourceEventId);
+    }
+
+    [Fact]
+    public void E9_reversal_metadata_is_distinct_from_E7_fee_source_metadata()
+    {
+        var result = Scenario.Run();
+
+        var fee = result.LedgerEntries.Single(e => e.EntryId == "FEE-ACC-001-D2");
+        var reversal = result.LedgerEntries.Single(e => e.EntryId == "E9");
+
+        Assert.Equal("E7", fee.SourceEventId);
+        Assert.Null(fee.ReversalOfEntryId);
+
+        Assert.Equal("E9", reversal.SourceEventId);
+        Assert.Equal("E7", reversal.ReversalOfEntryId);
     }
 
     [Fact]

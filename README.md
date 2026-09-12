@@ -15,7 +15,7 @@ dotnet build
 dotnet test
 ```
 
-The test suite contains one deliberately failing test. It encodes rejected acceptance criterion #6 and is intentionally expected to fail. All other tests should pass.
+The test suite contains one deliberately failing test. The remaining tests are expected to pass. It encodes rejected acceptance criterion #6 and is intentionally expected to fail. All other tests should pass.
 
 Run the executable:
 

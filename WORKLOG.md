@@ -11,3 +11,5 @@
 - 2026-09-12 22:08 +04:00 — Added the required intentionally failing test for rejected acceptance criterion #6.
 - 2026-09-12 22:12 +04:00 — Added independent Python scenario arithmetic verification. The local environment does not have the .NET SDK, so `dotnet test` could not be executed here.
 - 2026-09-12 22:18 +04:00 — Added expected-output documentation and repository ignore rules; reviewed the final source for constructor duplication, error ownership, authorization-as-of-day semantics, fee idempotency, value-date reversal, and interest reconciliation.
+
+- 2026-09-12 — Candidate-provided `dotnet test` output showed 6 failures: 4 implementation/test defects plus the required intentional failure. Root cause for the E9-related failures was identified: the Day-2 overdraft fee used `SourceEventId = E7`, and reversal detection incorrectly interpreted that fee as evidence that E7 had already been reversed. Corrected by adding explicit `ReversalOfEntryId` metadata. The Day-2 pre-fee test was also corrected to replay only through E7 and exclude the separately booked fee from the pre-fee calculation.

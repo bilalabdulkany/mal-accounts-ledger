@@ -83,7 +83,8 @@ public sealed record LedgerEntry(
     Money Amount,
     int ValueDay,
     string? SourceEventId = null,
-    string? RelatedAuthorizationId = null);
+    string? RelatedAuthorizationId = null,
+    string? ReversalOfEntryId = null);
 
 public sealed record Authorization(
     string AuthorizationId,

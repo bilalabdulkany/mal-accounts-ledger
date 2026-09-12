@@ -14,7 +14,7 @@ Tests exercise both domain invariants and the complete supplied scenario.
 
 ### Append-only ledger
 
-A reversal appends a new ledger entry referencing the original. E7 is never modified or deleted. This preserves an auditable history and is required by the specification.
+A reversal appends a new ledger entry with explicit `ReversalOfEntryId` metadata. E7 is never modified or deleted. `SourceEventId` is reserved for the event that caused an entry; this avoids confusing a fee caused by E7 with a reversal of E7.
 
 ### Booked day versus value date
 
