@@ -421,7 +421,7 @@ public sealed class LedgerEngine
     private decimal CalculateActiveHolds(string accountId, int day)
     {
         return _authorizations.Values
-            .Where(a => a.AccountId == accountId && a.BookedDay <= day && a.Status == AuthorizationStatus.Approved)
+            .Where(a => a.AccountId == accountId && a.BookedDay <= day && a.Status != AuthorizationStatus.Rejected)
             .Where(a => a.SettledDay is null || a.SettledDay > day)
             .Sum(a => a.Hold.Amount);
     }
