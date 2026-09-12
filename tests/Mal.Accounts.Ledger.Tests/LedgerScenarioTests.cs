@@ -30,7 +30,6 @@ public sealed class LedgerScenarioTests
 
         Assert.Equal(AuthorizationStatus.Settled, authA.Status);
         Assert.Equal(200m, authA.Hold.Amount);
-        Assert.Equal(250m, Scenario.Day(result, "ACC-001", 2).ClosingLedgerBalance.Amount);
         Assert.Equal(AuthorizationStatus.Approved,
             Scenario.Day(result, "ACC-001", 2).Authorizations.Single(x => x.AuthorizationId == "Auth-A").Status);
 
@@ -39,6 +38,7 @@ public sealed class LedgerScenarioTests
         engine.Replay([
             new CreditEvent("C1", 1, 1, "ACC-001", new Money(Currency.Aed, 250m)),
             new AuthorizationEvent("C2", 2, 2, "ACC-001", "Auth-A", new Money(Currency.Aed, 200m))]);
+        Assert.Equal(250m, engine.CalculateLedgerBalance("ACC-001", 2).Amount);
         Assert.Equal(50m, engine.CalculateAvailableBalance("ACC-001", 2).Amount);
     }
 
