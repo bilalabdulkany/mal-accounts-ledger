@@ -223,6 +223,12 @@ public sealed class LedgerEngine
             e.EventId,
             e.BookedDay,
             SettledDay: null);
+
+        if (status == AuthorizationStatus.Rejected)
+        {
+            AddError(e, "AUTHORIZATION_DECLINED",
+                $"Authorization {e.AuthorizationId} declined: available balance after hold would be negative.");
+        }
     }
 
     private void ProcessSettlement(SettlementEvent e)
