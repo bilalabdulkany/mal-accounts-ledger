@@ -20,3 +20,10 @@ The runner's important values after complete replay are:
 The Day-2 `AED -370.00` acceptance criterion is the **transient pre-fee balance when E7 is processed**, not the final post-replay Day-2 snapshot. E7 arrives on Day 5 but has Day-2 value date; E9 later adds AED 620 back at Day 2 value date.
 
 The Day-6 AED closing balance includes the single AED 0.98 interest-capitalization entry. The daily interest base for Day 6 is AED 440.00 before that capitalization.
+
+
+## Account opening balances
+
+The runner prints the opening balance once in each account section:
+- ACC-001: AED 0.00
+- ACC-002: BHD 0.000

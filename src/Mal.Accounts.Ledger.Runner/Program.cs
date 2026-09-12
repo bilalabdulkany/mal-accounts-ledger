@@ -27,6 +27,12 @@ foreach (var accountId in new[] { "ACC-001", "ACC-002" })
     Console.WriteLine($"ACCOUNT: {accountId}");
     Console.WriteLine(new string('=', 68));
 
+    var openingBalance = accountId == "ACC-001"
+        ? new Money(Currency.Aed, 0m)
+        : new Money(Currency.Bhd, 0m);
+    Console.WriteLine($"OPENING BALANCE          : {openingBalance}");
+    Console.WriteLine();
+
     foreach (var day in result.DailySnapshots.Where(x => x.AccountId == accountId))
     {
         Console.WriteLine($"DAY {day.Day}");
