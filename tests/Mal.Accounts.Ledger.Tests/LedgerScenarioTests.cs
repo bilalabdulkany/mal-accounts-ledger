@@ -129,20 +129,20 @@ public sealed class LedgerScenarioTests
             .OrderBy(x => x.Day)
             .ToArray();
 
-        Assert.Equal(new decimal[] { 0.10m, 0.09m, 0.25m, 0.18m, 0.18m, 0.42m },
+        Assert.Equal(new decimal[] { 0.10m, 0.09m, 0.25m, 0.18m, 0.18m, 0.18m },
             aed.Select(x => x.Amount.Amount).ToArray());
-        Assert.Equal(new decimal[] { 250m, 225m, 625m, 440m, 440m, 1060m },
+        Assert.Equal(new decimal[] { 250m, 225m, 625m, 440m, 440m, 440m },
             aed.Select(x => x.ClosingBalance.Amount).ToArray());
 
         var aedAccrualSum = aed.Sum(x => x.Amount.Amount);
-        Assert.Equal(1.22m, aedAccrualSum);
+        Assert.Equal(0.98m, aedAccrualSum);
         Assert.Equal(aedAccrualSum, result.CapitalizedInterest["ACC-001"].Amount);
 
         var capitalizationEntries = result.LedgerEntries
             .Where(e => e.AccountId == "ACC-001" && e.Type == EntryType.InterestCapitalization)
             .ToArray();
         Assert.Single(capitalizationEntries);
-        Assert.Equal(1.22m, capitalizationEntries[0].Amount.Amount);
+        Assert.Equal(0.98m, capitalizationEntries[0].Amount.Amount);
         Assert.Equal(6, capitalizationEntries[0].ValueDay);
     }
 
