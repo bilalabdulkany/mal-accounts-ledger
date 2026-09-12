@@ -92,7 +92,8 @@ public sealed record Authorization(
     int ValueDay,
     AuthorizationStatus Status,
     string EventId,
-    int BookedDay);
+    int BookedDay,
+    int? SettledDay);
 
 public abstract record LedgerEvent(string EventId, int BookedDay, int ValueDay, string AccountId);
 
@@ -114,7 +115,7 @@ public sealed record ReversalEvent(string EventId, int BookedDay, int ValueDay, 
 public sealed record InstallmentCreditEvent(string EventId, int BookedDay, int ValueDay, string AccountId, Money Total, int InstallmentCount)
     : LedgerEvent(EventId, BookedDay, ValueDay, AccountId);
 
-public sealed record ProcessingError(int Day, string EventId, string Code, string Message);
+public sealed record ProcessingError(string AccountId, int Day, string EventId, string Code, string Message);
 
 public sealed record InterestAccrual(string AccountId, int Day, Money ClosingBalance, Money Amount);
 
