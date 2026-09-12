@@ -37,6 +37,27 @@ foreach (var accountId in new[] { "ACC-001", "ACC-002" })
     {
         Console.WriteLine($"DAY {day.Day}");
         Console.WriteLine($"  Closing Ledger Balance : {day.ClosingLedgerBalance}");
+
+        var dayEntries = result.LedgerEntries
+            .Where(e => e.AccountId == accountId && e.ValueDay == day.Day)
+            .ToList();
+        Console.WriteLine("  Ledger Entries         :");
+        if (dayEntries.Count == 0)
+        {
+            Console.WriteLine("    -");
+        }
+        else
+        {
+            foreach (var entry in dayEntries)
+            {
+                var relation = entry.ReversalOfEntryId is null
+                    ? string.Empty
+                    : $" reverses={entry.ReversalOfEntryId}";
+                Console.WriteLine(
+                    $"    {entry.EntryId}: {entry.Type} {entry.Amount}{relation}");
+            }
+        }
+
         Console.WriteLine($"  Fee Assessments        : {day.FeeAssessments}");
         Console.WriteLine($"  Daily Interest         : {day.DailyInterest}");
         Console.WriteLine($"  Authorizations         : {(day.Authorizations.Count == 0 ? "-" : string.Join(", ", day.Authorizations.Select(a => $"{a.AuthorizationId}={a.Status}")))}");
