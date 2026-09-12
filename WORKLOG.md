@@ -10,3 +10,4 @@
 - 2026-09-12 22:03 +04:00 — Added explicit daily-interest tests for every AED day and every BHD day, plus independent sum and single-capitalization assertions.
 - 2026-09-12 22:08 +04:00 — Added the required intentionally failing test for rejected acceptance criterion #6.
 - 2026-09-12 22:12 +04:00 — Added independent Python scenario arithmetic verification. The local environment does not have the .NET SDK, so `dotnet test` could not be executed here.
+- 2026-09-12 22:18 +04:00 — Added expected-output documentation and repository ignore rules; reviewed the final source for constructor duplication, error ownership, authorization-as-of-day semantics, fee idempotency, value-date reversal, and interest reconciliation.
